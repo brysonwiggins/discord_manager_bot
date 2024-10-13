@@ -21,6 +21,7 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 
 loldle_channel_id = int(os.getenv("LOLDLE_CHANNEL_ID"))
 welcome_message_id = int(os.getenv("WELCOME_MESSAGE_ID"))
+lord_poptarts_id = int(os.getenv("LORD_POPTARTS_ID"))
 mst = timezone('America/Denver')
 
 emoji_to_role = {
@@ -84,6 +85,23 @@ async def submit(ctx: discord.Interaction, submission: str):
 
     except Exception as e:
         await ctx.response.send_message(f"Error processing submission: {str(e)}")
+
+
+@bot.tree.command(name="request", description="puts in a request for a new channel to be created")
+async def request(ctx: discord.Interaction, channel_suggestion: str, justification: str):
+    try:
+        # Get the user object for your Discord user ID
+        user = await bot.fetch_user(lord_poptarts_id)
+        
+        # Send a direct message (DM) to yourself
+        await user.send(f"New request from {ctx.user.name}:\n Channel suggestion: {channel_suggestion}\nJustification: {justification}")
+        
+        # Respond to the user in the channel
+        await ctx.response.send_message("Your request has been sent!")
+    
+    except Exception as e:
+        await ctx.response.send_message(f"Failed to send your request: {str(e)}")
+
 
 
 @bot.event
