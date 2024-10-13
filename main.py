@@ -2,7 +2,8 @@
 import json
 import discord
 import os
-from dotenv import load_dotenv # type: ignore
+from database.loldle_repo import get_loldle_data
+from dotenv import load_dotenv
 from discord.ext import commands
 from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -10,7 +11,7 @@ from apscheduler.triggers.cron import CronTrigger
 from pytz import timezone
 ########
 from models.LoldleData import LoldleData
-from util import DAILY_STATS_FOLDER, get_submissions_by_date, get_today_date, get_todays_answers, save_submission
+from util import DAILY_STATS_FOLDER, get_today_date, get_todays_answers, save_submission
 ########
 
 load_dotenv()
@@ -55,7 +56,7 @@ async def on_ready():
 async def submit(ctx: discord.Interaction):
 
     fetchedAnswers = get_todays_answers()
-    submitted = get_submissions_by_date(get_today_date())
+    submitted = get_loldle_data(get_today_date(), ctx.user.id)
     alreadySubmitted = False
     for submission in submitted:
         if(submission['userId'] == ctx.user.id):
@@ -87,31 +88,31 @@ async def submit(ctx: discord.Interaction, submission: str):
 
 @bot.event
 async def on_raw_reaction_add(payload):
-        # Check if the reaction is on the watched message
+    print(payload)
+    # Check if the reaction is on the watched message
     if payload.message_id != welcome_message_id:
         return
 
     guild = bot.get_guild(payload.guild_id)
-    member = guild.get_member(payload.user_id)
+    member = guild.get_member(payload.user_id) if guild else None
     if member is None:
         try:
-            member = await guild.fetch_member(payload.user_id)
+            member = await guild.fetch_member(payload.user_id
+                                              ) if guild else None
         except discord.NotFound:
             print(f"Member with ID {payload.user_id} not found.")
             return
-        
-    if member.bot:
+
+    if guild is None or member is None or member.bot:
         return
 
     emoji = payload.emoji.name
 
-
     # Check if the emoji is in the mapping
     if emoji in emoji_to_role:
-        print("found")
         role_name = emoji_to_role[emoji]
         role = discord.utils.get(guild.roles, name=role_name)
-        
+
         if role:
             await member.add_roles(role)
             print(f"Assigned {role_name} to {member.name}")
@@ -124,16 +125,22 @@ async def on_raw_reaction_remove(payload):
         return
 
     guild = bot.get_guild(payload.guild_id)
-    member = guild.get_member(payload.user_id)
-    
-    if member is None or member.bot:
+    member = guild.get_member(payload.user_id) if guild else None
+    if member is None:
+        try:
+            member = await guild.fetch_member(payload.user_id
+                                              ) if guild else None
+        except discord.NotFound:
+            print(f"Member with ID {payload.user_id} not found.")
+            return
+
+    if guild is None or member is None or member.bot:
         return
 
     emoji = payload.emoji.name
 
     # Check if the emoji is in the mapping
     if emoji in emoji_to_role:
-        print("found")
         role_name = emoji_to_role[emoji]
         role = discord.utils.get(guild.roles, name=role_name)
 

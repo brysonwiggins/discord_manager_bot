@@ -37,16 +37,6 @@ def save_submission(user_id, data):
 
     write_json_file(filename, saved_data)
 
-def get_submissions_by_date(date: str):
-    filename = f"{DAILY_STATS_FOLDER}/{date}.json"
-
-    if os.path.exists(filename):
-        saved_data = read_json_file(filename)
-    else:
-        saved_data = []
-
-    return saved_data
-
 
 def read_json_file(file_path):
     try:
