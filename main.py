@@ -27,7 +27,7 @@ mst = timezone('America/Denver')
 emoji_to_role = {
     '🎰': 'Daily Games',
     '🤪': 'Memes',
-    '🤳': 'TikToks',
+    '🤳': 'Tik Toks',
     '🖨️': '3D Printing',
     '🥞': 'Food',
     'Mario_Dab': 'Gaming',
