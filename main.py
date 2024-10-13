@@ -97,10 +97,10 @@ async def request(ctx: discord.Interaction, channel_suggestion: str, justificati
         await user.send(f"New request from {ctx.user.name}:\n Channel suggestion: {channel_suggestion}\nJustification: {justification}")
         
         # Respond to the user in the channel
-        await ctx.response.send_message("Your request has been sent!")
+        await ctx.response.send_message("Your request has been sent!", ephemeral=True)
     
     except Exception as e:
-        await ctx.response.send_message(f"Failed to send your request: {str(e)}")
+        await ctx.response.send_message(f"Failed to send your request: {str(e)}", ephemeral=True)
 
 
 
