@@ -19,8 +19,8 @@ load_dotenv()
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix="/", intents=intents) 
 
-loldle_channel_id = os.getenv("LOLDLE_CHANNEL_ID")
-welcome_message_id = os.getenv("WELCOME_CHANNEL_ID")
+loldle_channel_id = int(os.getenv("LOLDLE_CHANNEL_ID"))
+welcome_message_id = int(os.getenv("WELCOME_MESSAGE_ID"))
 mst = timezone('America/Denver')
 
 emoji_to_role = {
@@ -95,14 +95,15 @@ async def on_raw_reaction_add(payload):
 
     guild = bot.get_guild(payload.guild_id)
     member = guild.get_member(payload.user_id) if guild else None
+    print(guild, member)
     if member is None:
         try:
-            member = await guild.fetch_member(payload.user_id
-                                              ) if guild else None
+            member = await guild.fetch_member(payload.user_id) if guild else None
         except discord.NotFound:
             print(f"Member with ID {payload.user_id} not found.")
             return
 
+    print(guild, member)
     if guild is None or member is None or member.bot:
         return
 
@@ -120,7 +121,6 @@ async def on_raw_reaction_add(payload):
 
 @bot.event
 async def on_raw_reaction_remove(payload):
-    print(payload)
     if payload.message_id != welcome_message_id:
         return
 
@@ -128,8 +128,7 @@ async def on_raw_reaction_remove(payload):
     member = guild.get_member(payload.user_id) if guild else None
     if member is None:
         try:
-            member = await guild.fetch_member(payload.user_id
-                                              ) if guild else None
+            member = await guild.fetch_member(payload.user_id) if guild else None
         except discord.NotFound:
             print(f"Member with ID {payload.user_id} not found.")
             return
