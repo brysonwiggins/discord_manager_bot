@@ -21,7 +21,7 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 
 loldle_channel_id = int(os.getenv("LOLDLE_CHANNEL_ID"))
 welcome_message_id = int(os.getenv("WELCOME_MESSAGE_ID"))
-welcome_gaming_message_id = int(os.getenv(" "))
+welcome_gaming_message_id = int(os.getenv("WELCOME_GAMING_MESSAGE_ID"))
 lord_poptarts_id = int(os.getenv("LORD_POPTARTS_ID"))
 mst = timezone('America/Denver')
 
