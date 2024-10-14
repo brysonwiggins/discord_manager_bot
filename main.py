@@ -21,16 +21,24 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 
 loldle_channel_id = int(os.getenv("LOLDLE_CHANNEL_ID"))
 welcome_message_id = int(os.getenv("WELCOME_MESSAGE_ID"))
+welcome_gaming_message_id = int(os.getenv(" "))
 lord_poptarts_id = int(os.getenv("LORD_POPTARTS_ID"))
 mst = timezone('America/Denver')
 
-emoji_to_role = {
+emoji_to_role_welcome = {
     '🎰': 'Daily Games',
     '🤪': 'Memes',
     '🤳': 'Tik Toks',
     '🖨️': '3D Printing',
     '🥞': 'Food',
     'Mario_Dab': 'Gaming',
+}
+
+emoji_to_role_gaming = {
+    '🤬': 'LOL',
+    'Mario_TPose': 'SM64',
+    '🔒': 'Deadlock',
+    '🌫️': 'Enshrouded'
 }
 
 # Ensure folders exist
@@ -107,13 +115,17 @@ async def request(ctx: discord.Interaction, channel_suggestion: str, justificati
 @bot.event
 async def on_raw_reaction_add(payload):
     print(payload)
+    emoji_to_role
     # Check if the reaction is on the watched message
-    if payload.message_id != welcome_message_id:
+    if payload.message_id == welcome_message_id:
+        emoji_to_role = emoji_to_role_welcome
+    elif payload.message_id == welcome_gaming_message_id:
+        emoji_to_role = emoji_to_role_gaming
+    else:
         return
 
     guild = bot.get_guild(payload.guild_id)
     member = guild.get_member(payload.user_id) if guild else None
-    print(guild, member)
     if member is None:
         try:
             member = await guild.fetch_member(payload.user_id) if guild else None
@@ -121,15 +133,14 @@ async def on_raw_reaction_add(payload):
             print(f"Member with ID {payload.user_id} not found.")
             return
 
-    print(guild, member)
     if guild is None or member is None or member.bot:
         return
 
     emoji = payload.emoji.name
 
     # Check if the emoji is in the mapping
-    if emoji in emoji_to_role:
-        role_name = emoji_to_role[emoji]
+    if emoji in emoji_to_role_welcome:
+        role_name = emoji_to_role_welcome[emoji]
         role = discord.utils.get(guild.roles, name=role_name)
 
         if role:
@@ -139,7 +150,14 @@ async def on_raw_reaction_add(payload):
 
 @bot.event
 async def on_raw_reaction_remove(payload):
-    if payload.message_id != welcome_message_id:
+    print(payload)
+    emoji_to_role
+    # Check if the reaction is on the watched message
+    if payload.message_id == welcome_message_id:
+        emoji_to_role = emoji_to_role_welcome
+    elif payload.message_id == welcome_gaming_message_id:
+        emoji_to_role = emoji_to_role_gaming
+    else:
         return
 
     guild = bot.get_guild(payload.guild_id)
@@ -157,8 +175,8 @@ async def on_raw_reaction_remove(payload):
     emoji = payload.emoji.name
 
     # Check if the emoji is in the mapping
-    if emoji in emoji_to_role:
-        role_name = emoji_to_role[emoji]
+    if emoji in emoji_to_role_welcome:
+        role_name = emoji_to_role_welcome[emoji]
         role = discord.utils.get(guild.roles, name=role_name)
 
         if role:
