@@ -139,8 +139,8 @@ async def on_raw_reaction_add(payload):
     emoji = payload.emoji.name
 
     # Check if the emoji is in the mapping
-    if emoji in emoji_to_role_welcome:
-        role_name = emoji_to_role_welcome[emoji]
+    if emoji in emoji_to_role:
+        role_name = emoji_to_role[emoji]
         role = discord.utils.get(guild.roles, name=role_name)
 
         if role:
@@ -175,8 +175,8 @@ async def on_raw_reaction_remove(payload):
     emoji = payload.emoji.name
 
     # Check if the emoji is in the mapping
-    if emoji in emoji_to_role_welcome:
-        role_name = emoji_to_role_welcome[emoji]
+    if emoji in emoji_to_role:
+        role_name = emoji_to_role[emoji]
         role = discord.utils.get(guild.roles, name=role_name)
 
         if role:
