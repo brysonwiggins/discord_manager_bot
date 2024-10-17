@@ -31,6 +31,7 @@ emoji_to_role_welcome = {
     '🤳': 'Tik Toks',
     '🖨️': '3D Printing',
     '🥞': 'Food',
+    '🎵': 'Music',
     'Mario_Dab': 'Gaming',
 }
 
@@ -114,7 +115,6 @@ async def request(ctx: discord.Interaction, channel_suggestion: str, justificati
 
 @bot.event
 async def on_raw_reaction_add(payload):
-    print(payload)
     emoji_to_role = []
     # Check if the reaction is on the watched message
     if payload.message_id == welcome_message_id:
@@ -150,7 +150,6 @@ async def on_raw_reaction_add(payload):
 
 @bot.event
 async def on_raw_reaction_remove(payload):
-    print(payload)
     emoji_to_role = []
     # Check if the reaction is on the watched message
     if payload.message_id == welcome_message_id:
