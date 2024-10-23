@@ -31,8 +31,9 @@ emoji_to_role_welcome = {
     '🤳': 'Tik Toks',
     '🖨️': '3D Printing',
     '🥞': 'Food',
-    '🎵': 'Music',
     'Mario_Dab': 'Gaming',
+    '🎵': 'Music',
+    '🧑‍💻': 'Game Dev'
 }
 
 emoji_to_role_gaming = {
