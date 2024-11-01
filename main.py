@@ -40,7 +40,8 @@ emoji_to_role_gaming = {
     '🤬': 'LOL',
     'Mario_TPose': 'SM64',
     '🔒': 'Deadlock',
-    '🌫️': 'Enshrouded'
+    '🌫️': 'Enshrouded',
+    '🃏': 'TCG'
 }
 
 # Ensure folders exist
