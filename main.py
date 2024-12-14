@@ -33,7 +33,8 @@ emoji_to_role_welcome = {
     '🥞': 'Food',
     'Mario_Dab': 'Gaming',
     '🎵': 'Music',
-    '🧑‍💻': 'Game Dev'
+    '🧑‍💻': 'Game Dev',
+    'books': 'Books'
 }
 
 emoji_to_role_gaming = {
