@@ -42,7 +42,8 @@ emoji_to_role_gaming = {
     'Mario_TPose': 'SM64',
     '🔒': 'Deadlock',
     '🌫️': 'Enshrouded',
-    '🃏': 'TCG'
+    '🃏': 'TCG',
+    '🪝': 'POE'
 }
 
 # Ensure folders exist
