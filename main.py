@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 from discord.ext import commands
 ########
 from database.db import *
-from resources.utils import *
 ########
 
 load_dotenv()
