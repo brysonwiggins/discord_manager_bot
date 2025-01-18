@@ -148,6 +148,34 @@ async def remove_role(ctx: discord.Interaction, emoji: str, channel: ChannelType
     await user.send(f"New request from {ctx.user.name}:\n Update {channel.value} message to remove {emoji}:  {role}")
     return
 
+
+@bot.tree.command(name="add_db", description="adds emoji and role from the DB.")
+async def add_db(ctx: discord.Interaction, emoji: str, role_name: str, channel: ChannelType):
+    try:
+        channel_name = channel.value
+        add_row(channel_name, emoji, role_name)
+    except Exception as e:
+        print("exception add_db: ", e)
+
+@bot.tree.command(name="remove_db", description="Removes emoji and role from the DB.")
+async def remove_db(ctx: discord.Interaction, emoji: str, channel: ChannelType):
+    try:
+        channel_name = channel.value
+        remove_row(channel_name, emoji)
+    except Exception as e:
+        print("exception remove_db: ", e)
+
+@bot.tree.command(name="get_table", description="Gets all table in DB.")
+async def get_table(ctx: discord.Interaction, channel: ChannelType):
+    try:
+        channel_name = channel.value
+        table_data = get_table(channel_name)
+        user = await bot.fetch_user(lord_poptarts_id)
+        await user.send(f"Current DB contents:\n{table_data}")
+    except Exception as e:
+        print("exception get_table: ", e)
+
+
 @bot.event
 async def on_raw_reaction_add(payload):
     table = None
@@ -170,9 +198,11 @@ async def on_raw_reaction_add(payload):
 
     if guild is None or member is None or member.bot:
         return
+    
+    emoji = payload.emoji.name if payload.emoji.id is None else f'<:{payload.emoji.name}:{payload.emoji.id}>'
 
     # Check if the emoji is in the mapping
-    role_name = get_row_by_emoji(table, payload.emoji.name)
+    role_name = get_row_by_emoji(table, emoji)[1]
     if role_name is not None:
         role = discord.utils.get(guild.roles, name=role_name)
 
@@ -208,10 +238,10 @@ async def on_raw_reaction_remove(payload):
     if guild is None or member is None or member.bot:
         return
 
-    emoji = payload.emoji.name
+    emoji = payload.emoji.name if payload.emoji.id is None else f'<:{payload.emoji.name}:{payload.emoji.id}>'
 
     # Check if the emoji is in the mapping
-    role_name = get_row_by_emoji(table, payload.emoji.name)
+    role_name = get_row_by_emoji(table, emoji)[1]
     if role_name is not None:
         role = discord.utils.get(guild.roles, name=role_name)
 

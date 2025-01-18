@@ -35,6 +35,11 @@ def remove_row(table, emoji):
     cur.execute(f'DELETE FROM {table} WHERE emoji=\'{emoji}\'')
     con.commit()
 
-
-
+def get_table(table):
+    cur, con = db_setup()
+    res = cur.execute(f'SELECT * FROM {table}')
+    data = res.fetchall()
+    if(data is None):
+        print("role not found")
+    return data
 
