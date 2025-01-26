@@ -166,7 +166,7 @@ async def remove_db(ctx: discord.Interaction, emoji: str, channel: ChannelType):
         print("exception remove_db: ", e)
 
 @bot.tree.command(name="get_table", description="Gets all table in DB.")
-async def get_table(ctx: discord.Interaction, channel: ChannelType):
+async def get_table_from_db(ctx: discord.Interaction, channel: ChannelType):
     try:
         channel_name = channel.value
         table_data = get_table(channel_name)

@@ -28,7 +28,7 @@ def db_setup():
     cur.execute("CREATE TABLE IF NOT EXISTS gaming(emoji, role_name)")
 
     cur.executemany("INSERT INTO welcome VALUES(?, ?)", emoji_to_role_welcome)
-    cur.executemany("INSERT INTO welcome VALUES(?, ?)", emoji_to_role_welcome)
+    cur.executemany("INSERT INTO gaming VALUES(?, ?)", emoji_to_role_gaming)
     con.commit()
 
 db_setup()
